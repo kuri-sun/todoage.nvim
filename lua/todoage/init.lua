@@ -1,5 +1,22 @@
 local ns = vim.api.nvim_create_namespace("todoage")
 
+vim.api.nvim_set_hl(0, "TodoageFresh", { link = "Comment", default = true })
+vim.api.nvim_set_hl(0, "TodoageAging", { link = "WarningMsg", default = true })
+vim.api.nvim_set_hl(0, "TodoageStale", { link = "WarningMsg", bold = true, default = true })
+vim.api.nvim_set_hl(0, "TodoageFossil", { link = "ErrorMsg", bold = true, default = true })
+
+local function tier_hl(age_days)
+	if age_days <= 7 then
+		return "TodoageFresh"
+	elseif age_days <= 30 then
+		return "TodoageAging"
+	elseif age_days <= 180 then
+		return "TodoageStale"
+	else
+		return "TodoageFossil"
+	end
+end
+
 local M = {}
 
 local function parse_blame(output)
@@ -46,7 +63,7 @@ local function render(bufnr, blame_map, now)
 				if commit_time then
 					local age_days = math.floor((now - commit_time) / 86400)
 					vim.api.nvim_buf_set_extmark(bufnr, ns, lnum, 0, {
-						virt_text = { { string.format("(%d days)", age_days), "Comment" } },
+						virt_text = { { string.format("(%d days)", age_days), tier_hl(age_days) } },
 						virt_text_pos = "eol",
 					})
 				end
