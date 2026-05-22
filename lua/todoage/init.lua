@@ -83,8 +83,8 @@ local function render(bufnr, blame_map, now)
 	visit(parser:parse()[1]:root())
 end
 
-function M.refresh()
-	local bufnr = vim.api.nvim_get_current_buf()
+function M.refresh(bufnr)
+	bufnr = bufnr or vim.api.nvim_get_current_buf()
 	local filepath = vim.api.nvim_buf_get_name(bufnr)
 	if filepath == "" then
 		return
@@ -104,6 +104,41 @@ function M.refresh()
 			render(bufnr, blame_map, now)
 		end)
 	end)
+end
+
+local timers = {}
+
+local function debounced_refresh(bufnr)
+	if timers[bufnr] then
+		timers[bufnr]:stop()
+		timers[bufnr]:close()
+	end
+	timers[bufnr] = vim.uv.new_timer()
+	timers[bufnr]:start(150, 0, vim.schedule_wrap(function()
+		if timers[bufnr] then
+			timers[bufnr]:close()
+			timers[bufnr] = nil
+		end
+		M.refresh(bufnr)
+	end))
+end
+
+function M.setup()
+	local group = vim.api.nvim_create_augroup("todoage", { clear = true })
+
+	vim.api.nvim_create_autocmd({ "BufReadPost", "BufWritePost" }, {
+		group = group,
+		callback = function(args)
+			debounced_refresh(args.buf)
+		end,
+	})
+
+	vim.api.nvim_create_autocmd("FocusGained", {
+		group = group,
+		callback = function()
+			debounced_refresh(vim.api.nvim_get_current_buf())
+		end,
+	})
 end
 
 return M
