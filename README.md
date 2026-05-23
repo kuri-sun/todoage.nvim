@@ -79,20 +79,24 @@ Each `tiers` value is the day count at which the next tier begins. `aging = 14` 
 
 | Tier   | Range      | Default highlight   |
 | ------ | ---------- | ------------------- |
-| Fresh  | < 7 days   | `Comment`           |
-| Aging  | < 30 days  | `WarningMsg`        |
-| Stale  | < 180 days | `WarningMsg` + bold |
-| Fossil | ≥ 180 days | `ErrorMsg` + bold   |
+| Fresh       | < 7 days        | `Comment`           |
+| Aging       | < 30 days       | `WarningMsg`        |
+| Stale       | < 180 days      | `WarningMsg` + bold |
+| Fossil      | ≥ 180 days      | `ErrorMsg` + bold   |
+| Uncommitted | not yet in git  | `Comment`           |
+
+Uncommitted TODOs render as `(uncommitted)` — the label is intentional, not an age.
 
 ## Customizing colors
 
 Colors are not exposed through `setup({})` — set the highlight groups directly. This way colorschemes can ship `Todoage*` definitions that just work, and your overrides survive `:colorscheme` changes the same way every other plugin's highlights do.
 
 ```lua
-vim.api.nvim_set_hl(0, "TodoageFresh",  { fg = "#888888" })
-vim.api.nvim_set_hl(0, "TodoageAging",  { fg = "#d7af5f" })
-vim.api.nvim_set_hl(0, "TodoageStale",  { fg = "#d75f5f", bold = true })
-vim.api.nvim_set_hl(0, "TodoageFossil", { fg = "#ff0000", bold = true, underline = true })
+vim.api.nvim_set_hl(0, "TodoageFresh",       { fg = "#888888" })
+vim.api.nvim_set_hl(0, "TodoageAging",       { fg = "#d7af5f" })
+vim.api.nvim_set_hl(0, "TodoageStale",       { fg = "#d75f5f", bold = true })
+vim.api.nvim_set_hl(0, "TodoageFossil",      { fg = "#ff0000", bold = true, underline = true })
+vim.api.nvim_set_hl(0, "TodoageUncommitted", { fg = "#5f5f5f", italic = true })
 ```
 
 ## Behavior on non-git files

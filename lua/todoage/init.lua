@@ -4,6 +4,7 @@ vim.api.nvim_set_hl(0, "TodoageFresh", { link = "Comment", default = true })
 vim.api.nvim_set_hl(0, "TodoageAging", { link = "WarningMsg", default = true })
 vim.api.nvim_set_hl(0, "TodoageStale", { link = "WarningMsg", bold = true, default = true })
 vim.api.nvim_set_hl(0, "TodoageFossil", { link = "ErrorMsg", bold = true, default = true })
+vim.api.nvim_set_hl(0, "TodoageUncommitted", { link = "Comment", default = true })
 
 local function tier_hl(age_days)
 	if age_days < config.tiers.aging then
@@ -70,6 +71,8 @@ local function parse_blame(output)
 			elseif line:sub(1, 1) == "\t" and current_lnum and current_time then
 				if current_committed then
 					result[current_lnum] = current_time
+				else
+					result[current_lnum] = false
 				end
 				current_lnum = nil
 				current_time = nil
@@ -102,9 +105,14 @@ local function render(bufnr, blame_map, now)
 		for offset, line in ipairs(lines) do
 			if line_matches(line) then
 				local lnum = srow + offset - 1
-				local commit_time = blame_map[lnum + 1]
-				if commit_time then
-					local age_days = math.floor((now - commit_time) / 86400)
+				local entry = blame_map[lnum + 1]
+				if entry == false then
+					vim.api.nvim_buf_set_extmark(bufnr, ns, lnum, 0, {
+						virt_text = { { "(uncommitted)", "TodoageUncommitted" } },
+						virt_text_pos = "eol",
+					})
+				elseif entry then
+					local age_days = math.floor((now - entry) / 86400)
 					vim.api.nvim_buf_set_extmark(bufnr, ns, lnum, 0, {
 						virt_text = { { config.format(age_days), tier_hl(age_days) } },
 						virt_text_pos = "eol",
