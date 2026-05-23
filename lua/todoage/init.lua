@@ -17,6 +17,30 @@ local function tier_hl(age_days)
 	end
 end
 
+local config = {
+	keywords = { "TODO", "FIXME", "HACK" },
+}
+
+local patterns = {}
+
+local function rebuild_patterns()
+	patterns = {}
+	for _, kw in ipairs(config.keywords) do
+		table.insert(patterns, "%f[%w_]" .. kw .. "%f[%W_]")
+	end
+end
+
+rebuild_patterns()
+
+local function line_matches(line)
+	for _, pat in ipairs(patterns) do
+		if line:find(pat) then
+			return true
+		end
+	end
+	return false
+end
+
 local M = {}
 
 local function parse_blame(output)
@@ -57,7 +81,7 @@ local function render(bufnr, blame_map, now)
 		local srow, _, erow, _ = node:range()
 		local lines = vim.api.nvim_buf_get_lines(bufnr, srow, erow + 1, false)
 		for offset, line in ipairs(lines) do
-			if line:find("%f[%w_]TODO%f[%W_]") then
+			if line_matches(line) then
 				local lnum = srow + offset - 1
 				local commit_time = blame_map[lnum + 1]
 				if commit_time then
@@ -123,7 +147,10 @@ local function debounced_refresh(bufnr)
 	end))
 end
 
-function M.setup()
+function M.setup(opts)
+	config = vim.tbl_deep_extend("force", config, opts or {})
+	rebuild_patterns()
+
 	local group = vim.api.nvim_create_augroup("todoage", { clear = true })
 
 	vim.api.nvim_create_autocmd({ "BufReadPost", "BufWritePost" }, {
