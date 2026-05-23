@@ -141,7 +141,12 @@ local function render(bufnr, blame_map, now)
 	visit(parser:parse()[1]:root())
 end
 
+local enabled = true
+
 function M.refresh(bufnr)
+	if not enabled then
+		return
+	end
 	bufnr = bufnr or vim.api.nvim_get_current_buf()
 	local filepath = vim.api.nvim_buf_get_name(bufnr)
 	if filepath == "" then
@@ -179,6 +184,35 @@ local function debounced_refresh(bufnr)
 		end
 		M.refresh(bufnr)
 	end))
+end
+
+function M.disable()
+	enabled = false
+
+	for bufnr, timer in pairs(timers) do
+		timer:stop()
+		timer:close()
+		timers[bufnr] = nil
+	end
+
+	for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
+		if vim.api.nvim_buf_is_loaded(bufnr) then
+			vim.api.nvim_buf_clear_namespace(bufnr, ns, 0, -1)
+		end
+	end
+end
+
+function M.enable()
+	enabled = true
+	M.refresh()
+end
+
+function M.toggle()
+	if enabled then
+		M.disable()
+	else
+		M.enable()
+	end
 end
 
 function M.setup(opts)

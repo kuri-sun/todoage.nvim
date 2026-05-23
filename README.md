@@ -28,10 +28,13 @@ Annotations refresh automatically on:
 - `BufWritePost` — saving a file
 - `FocusGained` — re-focusing Neovim (catches external `git pull`)
 
-Manual trigger:
+Commands:
 
 ```
-:Todoage
+:Todoage          " refresh the current buffer
+:TodoageEnable    " resume auto-refresh and re-annotate the current buffer
+:TodoageDisable   " clear all annotations and pause auto-refresh
+:TodoageToggle    " enable/disable
 ```
 
 ## Configuration
