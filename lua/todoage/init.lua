@@ -24,6 +24,9 @@ local config = {
 		stale = 30,
 		fossil = 180,
 	},
+	format = function(age_days)
+		return string.format("(%d days)", age_days)
+	end,
 }
 
 local patterns = {}
@@ -92,7 +95,7 @@ local function render(bufnr, blame_map, now)
 				if commit_time then
 					local age_days = math.floor((now - commit_time) / 86400)
 					vim.api.nvim_buf_set_extmark(bufnr, ns, lnum, 0, {
-						virt_text = { { string.format("(%d days)", age_days), tier_hl(age_days) } },
+						virt_text = { { config.format(age_days), tier_hl(age_days) } },
 						virt_text_pos = "eol",
 					})
 				end

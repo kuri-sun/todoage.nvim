@@ -44,6 +44,12 @@ require("todoage").setup({
     stale  = 60,
     fossil = 365,
   },
+  format = function(age_days)
+    if age_days < 365 then
+      return string.format("(%d days)", age_days)
+    end
+    return string.format("(%.1f yrs)", age_days / 365)
+  end,
 })
 ```
 
@@ -57,12 +63,17 @@ Defaults:
     stale  = 30,
     fossil = 180,
   },
+  format = function(age_days)
+    return string.format("(%d days)", age_days)
+  end,
 }
 ```
 
 `keywords` replaces the default list wholesale, not merges. If you want the defaults plus extras, list them all. `tiers` is merged key-by-key, so you can override just one threshold.
 
 Each `tiers` value is the day count at which the next tier begins. `aging = 14` reads as "Fresh tops out at 14 days; day 14 and beyond is Aging."
+
+`format` receives the age in days and must return a string. It controls only the text; the tier highlight color is applied separately. Errors in your `format` function are not caught — fix the function if annotations stop appearing.
 
 ## Age tiers
 
@@ -96,7 +107,6 @@ Designed to complement `todo-comments.nvim` and similar plugins. `todoage.nvim` 
 
 - Blame results are not cached — each refresh re-runs `git blame`.
 - No fallback for filetypes without a tree-sitter parser.
-- Age is always shown in days regardless of magnitude.
 
 ## License
 
