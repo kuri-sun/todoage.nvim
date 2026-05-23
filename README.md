@@ -69,7 +69,7 @@ Defaults:
 }
 ```
 
-`keywords` replaces the default list wholesale, not merges. If you want the defaults plus extras, list them all. `tiers` is merged key-by-key, so you can override just one threshold.
+`keywords` replaces the default list wholesale, not merges. If you want the defaults plus extras, list them all. Each keyword must contain only letters, digits, and underscores — `setup()` raises an error otherwise. `tiers` is merged key-by-key, so you can override just one threshold.
 
 Each `tiers` value is the day count at which the next tier begins. `aging = 14` reads as "Fresh tops out at 14 days; day 14 and beyond is Aging."
 

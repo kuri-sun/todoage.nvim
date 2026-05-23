@@ -33,10 +33,17 @@ local config = {
 local patterns = {}
 
 local function rebuild_patterns()
-	patterns = {}
+	local new_patterns = {}
 	for _, kw in ipairs(config.keywords) do
-		table.insert(patterns, "%f[%w_]" .. kw .. "%f[%W_]")
+		if type(kw) ~= "string" or not kw:match("^[%w_]+$") then
+			error(string.format(
+				"todoage: invalid keyword %q — keywords must contain only letters, digits, and underscores",
+				tostring(kw)
+			))
+		end
+		table.insert(new_patterns, "%f[%w_]" .. kw .. "%f[%W_]")
 	end
+	patterns = new_patterns
 end
 
 rebuild_patterns()
