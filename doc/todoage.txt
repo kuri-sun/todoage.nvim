@@ -136,23 +136,16 @@ Default: >lua
 ==============================================================================
 6. HIGHLIGHTS                                             *todoage-highlights*
 
-Five groups, all linked to sensible colorscheme defaults. Override directly
-with |nvim_set_hl()| — there is no `colors` setup option.
+Five groups, all linked to |hl-Comment| by default. The age number itself
+carries the signal; override `TodoageStale` / `TodoageFossil` etc. with
+|nvim_set_hl()| to make older comments visually louder. There is no `colors`
+setup option.
 
     TodoageFresh        < |todoage-tiers| `aging` (default 7 days)
-                        Linked to |hl-Comment|.
-
     TodoageAging        < |todoage-tiers| `stale` (default 30 days)
-                        Linked to |hl-WarningMsg|.
-
     TodoageStale        < |todoage-tiers| `fossil` (default 180 days)
-                        Linked to |hl-WarningMsg|, bold.
-
     TodoageFossil       >= |todoage-tiers| `fossil`
-                        Linked to |hl-ErrorMsg|, bold.
-
     TodoageUncommitted  Lines not yet committed to git.
-                        Linked to |hl-Comment|.
 
 ==============================================================================
 7. BEHAVIOR                                                 *todoage-behavior*

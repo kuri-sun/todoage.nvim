@@ -70,17 +70,19 @@ Each `tiers` value is the day count at which the next tier begins. `aging = 14` 
 
 ## Age tiers
 
-| Tier        | Range          | Default highlight   |
-| ----------- | -------------- | ------------------- |
-| Fresh       | < 7 days       | `Comment`           |
-| Aging       | < 30 days      | `WarningMsg`        |
-| Stale       | < 180 days     | `WarningMsg` + bold |
-| Fossil      | ≥ 180 days     | `ErrorMsg` + bold   |
-| Uncommitted | not yet in git | `Comment`           |
+| Tier        | Range          | Default highlight |
+| ----------- | -------------- | ----------------- |
+| Fresh       | < 7 days       | `Comment`         |
+| Aging       | < 30 days      | `Comment`         |
+| Stale       | < 180 days     | `Comment`         |
+| Fossil      | ≥ 180 days    | `Comment`         |
+| Uncommitted | not yet in git | `Comment`         |
+
+By default every tier renders muted — the age number itself carries the signal. Override `TodoageStale`, `TodoageFossil`, etc. to make older comments visually louder. See [Customizing colors](#customizing-colors).
 
 ## Customizing colors
 
-Colors are not exposed through `setup({})` — set the highlight groups directly. This way colorschemes can ship `Todoage*` definitions that just work, and your overrides survive `:colorscheme` changes the same way every other plugin's highlights do.
+Colors are not exposed through `setup({})` — set the highlight groups directly. This way colorschemes can ship `Todoage*` definitions that just work.
 
 ```lua
 vim.api.nvim_set_hl(0, "TodoageFresh",       { fg = "#888888" })
@@ -88,6 +90,17 @@ vim.api.nvim_set_hl(0, "TodoageAging",       { fg = "#d7af5f" })
 vim.api.nvim_set_hl(0, "TodoageStale",       { fg = "#d75f5f", bold = true })
 vim.api.nvim_set_hl(0, "TodoageFossil",      { fg = "#ff0000", bold = true, underline = true })
 vim.api.nvim_set_hl(0, "TodoageUncommitted", { fg = "#5f5f5f", italic = true })
+```
+
+`:colorscheme` wipes all highlight groups. To have overrides survive theme switches, wrap them in a `ColorScheme` autocmd:
+
+```lua
+vim.api.nvim_create_autocmd("ColorScheme", {
+  callback = function()
+    vim.api.nvim_set_hl(0, "TodoageFossil", { fg = "#ff0000", bold = true })
+    -- ...other overrides
+  end,
+})
 ```
 
 ## Behavior on non-git files

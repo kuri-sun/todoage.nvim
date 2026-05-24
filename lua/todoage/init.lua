@@ -1,9 +1,9 @@
 local ns = vim.api.nvim_create_namespace("todoage")
 
 vim.api.nvim_set_hl(0, "TodoageFresh", { link = "Comment", default = true })
-vim.api.nvim_set_hl(0, "TodoageAging", { link = "WarningMsg", default = true })
-vim.api.nvim_set_hl(0, "TodoageStale", { link = "WarningMsg", bold = true, default = true })
-vim.api.nvim_set_hl(0, "TodoageFossil", { link = "ErrorMsg", bold = true, default = true })
+vim.api.nvim_set_hl(0, "TodoageAging", { link = "Comment", default = true })
+vim.api.nvim_set_hl(0, "TodoageStale", { link = "Comment", default = true })
+vim.api.nvim_set_hl(0, "TodoageFossil", { link = "Comment", default = true })
 vim.api.nvim_set_hl(0, "TodoageUncommitted", { link = "Comment", default = true })
 
 local config = {
