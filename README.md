@@ -119,4 +119,4 @@ Designed to complement `todo-comments.nvim` and similar plugins. `todoage.nvim` 
 
 ## License
 
-TBD
+MIT
