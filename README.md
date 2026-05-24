@@ -1,7 +1,5 @@
 # todoage.nvim
 
-[![tests](https://github.com/kuri-sun/todoage.nvim/actions/workflows/test.yml/badge.svg)](https://github.com/kuri-sun/todoage.nvim/actions/workflows/test.yml)
-
 Neovim plugin that displays the age of TODO comments as inline virtual text.
 
 ## Requirements
@@ -82,13 +80,13 @@ Each `tiers` value is the day count at which the next tier begins. `aging = 14` 
 
 ## Age tiers
 
-| Tier   | Range      | Default highlight   |
-| ------ | ---------- | ------------------- |
-| Fresh       | < 7 days        | `Comment`           |
-| Aging       | < 30 days       | `WarningMsg`        |
-| Stale       | < 180 days      | `WarningMsg` + bold |
-| Fossil      | ≥ 180 days      | `ErrorMsg` + bold   |
-| Uncommitted | not yet in git  | `Comment`           |
+| Tier        | Range          | Default highlight   |
+| ----------- | -------------- | ------------------- |
+| Fresh       | < 7 days       | `Comment`           |
+| Aging       | < 30 days      | `WarningMsg`        |
+| Stale       | < 180 days     | `WarningMsg` + bold |
+| Fossil      | ≥ 180 days     | `ErrorMsg` + bold   |
+| Uncommitted | not yet in git | `Comment`           |
 
 Uncommitted TODOs render as `(uncommitted)` — the label is intentional, not an age.
 
@@ -115,7 +113,6 @@ Designed to complement `todo-comments.nvim` and similar plugins. `todoage.nvim` 
 ## Known limitations
 
 - Blame results are not cached — each refresh re-runs `git blame`.
-- No fallback for filetypes without a tree-sitter parser.
 
 ## License
 
