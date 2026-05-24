@@ -15,27 +15,17 @@ Neovim plugin that displays the age of TODO comments as inline virtual text.
 ```lua
 {
   "kuri-sun/todoage.nvim",
-  event = { "BufReadPost", "BufNewFile" },
-  config = true,
+  -- event = { "BufReadPost", "BufNewFile" },  -- optional: lazy-load
+  -- opts = {},                                 -- replace {} with your options, or omit for defaults
 }
 ```
 
 ## Usage
 
-Annotations refresh automatically on:
-
-- `BufReadPost` — opening a file
-- `BufWritePost` — saving a file
-- `FocusGained` — re-focusing Neovim (catches external `git pull`)
-
-Commands:
-
-```
-:Todoage          " refresh the current buffer
-:TodoageEnable    " resume auto-refresh and re-annotate the current buffer
-:TodoageDisable   " clear all annotations and pause auto-refresh
-:TodoageToggle    " enable/disable
-```
+`:Todoage` - refresh the current buffer
+`:TodoageEnable` - resume auto-refresh and re-annotate the current buffer
+`:TodoageDisable` - clear all annotations and pause auto-refresh
+`:TodoageToggle` - enable/disable
 
 ## Configuration
 
@@ -87,8 +77,6 @@ Each `tiers` value is the day count at which the next tier begins. `aging = 14` 
 | Stale       | < 180 days     | `WarningMsg` + bold |
 | Fossil      | ≥ 180 days     | `ErrorMsg` + bold   |
 | Uncommitted | not yet in git | `Comment`           |
-
-Uncommitted TODOs render as `(uncommitted)` — the label is intentional, not an age.
 
 ## Customizing colors
 
