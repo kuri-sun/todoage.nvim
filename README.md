@@ -2,6 +2,8 @@
 
 Neovim plugin that displays the age of TODO comments as inline virtual text.
 
+![demo](assets/demo.png)
+
 ## Requirements
 
 - Neovim 0.10+ (for `vim.system`)
