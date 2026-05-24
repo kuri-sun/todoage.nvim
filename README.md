@@ -1,5 +1,7 @@
 # todoage.nvim
 
+[![tests](https://github.com/kuri-sun/todoage.nvim/actions/workflows/test.yml/badge.svg)](https://github.com/kuri-sun/todoage.nvim/actions/workflows/test.yml)
+
 Neovim plugin that displays the age of TODO comments as inline virtual text.
 
 ## Requirements
