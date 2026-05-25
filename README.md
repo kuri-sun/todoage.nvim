@@ -12,8 +12,6 @@ Neovim plugin that displays the age of TODO comments as inline virtual text.
 
 ## Installation
 
-### lazy.nvim
-
 ```lua
 {
   "kuri-sun/todoage.nvim",
@@ -62,10 +60,10 @@ Colors are not exposed through `setup({})` — set the highlight groups directly
 
 Two groups:
 
-| Group                | Applies to                              | Default      |
-| -------------------- | --------------------------------------- | ------------ |
-| `Todoage`            | Committed TODOs — the `(N days)` label  | `Comment`    |
-| `TodoageUncommitted` | TODOs not yet in git — `(uncommitted)`  | `Comment`    |
+| Group                | Applies to                             | Default   |
+| -------------------- | -------------------------------------- | --------- |
+| `Todoage`            | Committed TODOs — the `(N days)` label | `Comment` |
+| `TodoageUncommitted` | TODOs not yet in git — `(uncommitted)` | `Comment` |
 
 ```lua
 vim.api.nvim_set_hl(0, "Todoage",            { fg = "#888888" })
