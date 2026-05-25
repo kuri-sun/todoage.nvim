@@ -1,4 +1,4 @@
-.PHONY: test
+.PHONY: test fmt fmt-check
 
 PLENARY_DIR := .tests/site/pack/deps/start/plenary.nvim
 
@@ -9,3 +9,9 @@ test: $(PLENARY_DIR)
 
 $(PLENARY_DIR):
 	git clone --depth=1 https://github.com/nvim-lua/plenary.nvim.git $@
+
+fmt:
+	stylua lua/ tests/ plugin/
+
+fmt-check:
+	stylua --check lua/ tests/ plugin/
