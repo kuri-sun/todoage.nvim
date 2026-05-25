@@ -29,36 +29,19 @@ Neovim plugin that displays the age of TODO comments as inline virtual text.
 
 ## Configuration
 
-```lua
-require("todoage").setup({
-  keywords = { "TODO", "FIXME", "HACK", "XXX", "NOTE" },
-  tiers = {
-    aging  = 14,
-    stale  = 60,
-    fossil = 365,
-  },
-  format = function(age_days)
-    if age_days < 365 then
-      return string.format("(%d days)", age_days)
-    end
-    return string.format("(%.1f yrs)", age_days / 365)
-  end,
-})
-```
-
 Defaults:
 
 ```lua
-{
-  keywords = { "TODO", "FIXME", "HACK" },
-  tiers = {
-    aging  = 7,
-    stale  = 30,
-    fossil = 180,
-  },
-  format = function(age_days)
-    return string.format("(%d days)", age_days)
-  end,
+opts = {
+  -- keywords = { "TODO", "FIXME", "HACK" },
+  -- tiers = {
+  --   aging  = 7,
+  --   stale  = 30,
+  --   fossil = 180,
+  -- },
+  -- format = function(age_days)
+  --   return string.format("(%d days)", age_days)
+  -- end,
 }
 ```
 
@@ -75,7 +58,7 @@ Each `tiers` value is the day count at which the next tier begins. `aging = 14` 
 | Fresh       | < 7 days       | `Comment`         |
 | Aging       | < 30 days      | `Comment`         |
 | Stale       | < 180 days     | `Comment`         |
-| Fossil      | ≥ 180 days    | `Comment`         |
+| Fossil      | ≥ 180 days     | `Comment`         |
 | Uncommitted | not yet in git | `Comment`         |
 
 By default every tier renders muted — the age number itself carries the signal. Override `TodoageStale`, `TodoageFossil`, etc. to make older comments visually louder. See [Customizing colors](#customizing-colors).
@@ -103,21 +86,9 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 })
 ```
 
-## Troubleshooting
-
-Run `:checkhealth todoage` to verify your Neovim version, `git` availability, and tree-sitter parser coverage.
-
-## Behavior on non-git files
-
-Buffers without a filename, files outside a git repository, and files not yet tracked render no annotations. No errors.
-
 ## Coexistence with other TODO plugins
 
 Designed to complement `todo-comments.nvim` and similar plugins. `todoage.nvim` only adds end-of-line age annotations — it does not highlight the keyword itself, provide a quickfix list, or affect search.
-
-## Known limitations
-
-- Blame results are not cached — each refresh re-runs `git blame`.
 
 ## License
 
