@@ -1,0 +1,42 @@
+name: Feature request
+description: Suggest an idea or enhancement for todoage.nvim
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        todoage.nvim is intentionally small — it only adds end-of-line age annotations to TODO comments. Requests that keep it focused (or compose with other plugins) are the easiest to accept.
+
+  - type: checkboxes
+    id: prereqs
+    attributes:
+      label: Prerequisites
+      options:
+        - label: I searched existing issues and discussions and did not find a duplicate.
+          required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What are you trying to do that todoage.nvim doesn't let you do today?
+      placeholder: I want older comments to stand out, but every annotation uses the same highlight.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: How might it work? Include the `setup()` options or commands you imagine, if any.
+      render: lua
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Other approaches you've tried or thought about, including existing plugins.
+    validations:
+      required: false
