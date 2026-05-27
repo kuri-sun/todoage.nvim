@@ -11,7 +11,6 @@ CONTENTS                                                    *todoage-contents*
   3. Setup ................................................... |todoage-setup|
   4. Options ............................................... |todoage-options|
      - keywords ........................................... |todoage-keywords|
-     - tiers ................................................. |todoage-tiers|
      - format ............................................... |todoage-format|
   5. Commands ............................................. |todoage-commands|
   6. Highlights ......................................... |todoage-highlights|
@@ -21,8 +20,8 @@ CONTENTS                                                    *todoage-contents*
 1. INTRODUCTION                                         *todoage-introduction*
 
 todoage.nvim annotates TODO-style comments with their age as inline virtual
-text. The age is resolved via |git-blame| against the file on disk. Older
-comments are styled more loudly so they are harder to ignore.
+text. The age is resolved via |git-blame| against the file on disk, so you can
+see at a glance how long a comment has been sitting there.
 
 A line like: >
     // TODO: handle refunds
@@ -51,11 +50,6 @@ With options: >lua
 
     require("todoage").setup({
       keywords = { "TODO", "FIXME", "HACK", "XXX", "NOTE" },
-      tiers = {
-        aging  = 14,
-        stale  = 60,
-        fossil = 365,
-      },
       format = function(age_days)
         return string.format("(%d days)", age_days)
       end,
@@ -82,30 +76,10 @@ Default: >lua
 <
 
 ------------------------------------------------------------------------------
-tiers                                                          *todoage-tiers*
-
-Day-count thresholds at which annotations escalate to the next visual tier.
-Each value is the day count at which the *next* tier begins. So `aging = 7`
-reads as "Fresh tops out at 7 days; day 7 and beyond is Aging."
-
-Merged key-by-key, so you can override just one threshold.
-
-Default: >lua
-
-    {
-      aging  = 7,
-      stale  = 30,
-      fossil = 180,
-    }
-<
-
-See |todoage-highlights| for the highlight group each tier uses.
-
-------------------------------------------------------------------------------
 format                                                        *todoage-format*
 
-Function taking the age in days and returning the string to render. The tier
-highlight is applied to whatever string you return.
+Function taking the age in days and returning the string to render. The
+|todoage-highlights| highlight is applied to whatever string you return.
 
 Errors in your format function are not caught — fix the function if
 annotations stop appearing.
@@ -136,15 +110,11 @@ Default: >lua
 ==============================================================================
 6. HIGHLIGHTS                                             *todoage-highlights*
 
-Five groups, all linked to |hl-Comment| by default. The age number itself
-carries the signal; override `TodoageStale` / `TodoageFossil` etc. with
-|nvim_set_hl()| to make older comments visually louder. There is no `colors`
-setup option.
+Two groups, both linked to |hl-Comment| by default. The age number itself
+carries the signal; override `TodoageAge` with |nvim_set_hl()| to make
+annotations visually louder. There is no `colors` setup option.
 
-    TodoageFresh        < |todoage-tiers| `aging` (default 7 days)
-    TodoageAging        < |todoage-tiers| `stale` (default 30 days)
-    TodoageStale        < |todoage-tiers| `fossil` (default 180 days)
-    TodoageFossil       >= |todoage-tiers| `fossil`
+    TodoageAge          Age of a committed comment.
     TodoageUncommitted  Lines not yet committed to git.
 
 ==============================================================================
