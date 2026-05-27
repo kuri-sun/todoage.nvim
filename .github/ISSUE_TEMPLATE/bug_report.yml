@@ -1,0 +1,110 @@
+name: Bug report
+description: Something in todoage.nvim isn't working as expected
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to file a bug. Please fill out the sections below so the issue can be reproduced.
+
+  - type: checkboxes
+    id: prereqs
+    attributes:
+      label: Prerequisites
+      description: A few quick checks before filing.
+      options:
+        - label: I am on Neovim 0.10 or newer (`nvim --version`).
+          required: true
+        - label: "`git` is available on my `PATH` and the file is inside a git repository."
+          required: true
+        - label: A tree-sitter parser is installed for the language of the affected file (`:checkhealth nvim-treesitter` or `:TSInstall <lang>`).
+          required: true
+        - label: I searched existing issues and did not find a duplicate.
+          required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What happened, and what did you expect to happen instead?
+      placeholder: Age annotations do not appear on TODO comments in Rust files, but they do in Lua.
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: Numbered steps. A link to a tiny example repository is the most helpful.
+      placeholder: |
+        1. Open a committed file containing `// TODO: ...`
+        2. Run `:Todoage`
+        3. No annotation appears
+    validations:
+      required: true
+
+  - type: textarea
+    id: config
+    attributes:
+      label: Minimal configuration
+      description: The smallest `setup()` (and plugin-manager spec) that still reproduces the issue.
+      render: lua
+      placeholder: |
+        require("todoage").setup({
+          keywords = { "TODO", "FIXME", "HACK" },
+        })
+    validations:
+      required: true
+
+  - type: input
+    id: nvim-version
+    attributes:
+      label: Neovim version
+      description: Output of `nvim --version` (first line).
+      placeholder: NVIM v0.10.2
+    validations:
+      required: true
+
+  - type: input
+    id: filetype-parser
+    attributes:
+      label: Affected filetype and tree-sitter parser
+      description: The `filetype` of the buffer and whether its parser is installed.
+      placeholder: "filetype=rust, parser installed via :TSInstall rust"
+    validations:
+      required: true
+
+  - type: input
+    id: git-version
+    attributes:
+      label: git version
+      description: Output of `git --version`.
+      placeholder: git version 2.43.0
+    validations:
+      required: true
+
+  - type: input
+    id: os
+    attributes:
+      label: Operating system
+      placeholder: macOS 14.5 / Ubuntu 24.04 / Windows 11
+    validations:
+      required: true
+
+  - type: textarea
+    id: checkhealth
+    attributes:
+      label: ":checkhealth todoage output"
+      description: Run `:checkhealth todoage` and paste the report. This is the fastest way to spot a missing dependency.
+      render: text
+    validations:
+      required: false
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Errors or relevant output
+      description: Any messages from `:messages` or the command line. This will be rendered as code, so no backticks needed.
+      render: text
+    validations:
+      required: false
